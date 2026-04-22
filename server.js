@@ -2,13 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const mysql = require("mysql2/promise"); // ✅ ADD THIS
+const mysql = require("mysql2/promise");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ DB CONNECTION TEST (ADD THIS BLOCK)
+// DB connection test
 async function connectDB() {
   try {
     const conn = await mysql.createConnection({
@@ -24,11 +24,14 @@ async function connectDB() {
     console.error("❌ MySQL Connection Failed:", err.message);
   }
 }
-
 connectDB();
-// ------------------------------------
 
-// Serve frontend static files
+// ✅ ADD THIS ROUTE
+app.get("/api", (req, res) => {
+  res.json({ message: "API working 🚀" });
+});
+
+// Serve frontend
 app.use(express.static(path.join(__dirname, "..")));
 
 // API routes

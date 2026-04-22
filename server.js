@@ -39,8 +39,11 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/courses", require("./routes/courses"));
 app.use("/api/progress", require("./routes/progress"));
 
-// SPA fallback
-app.get("*", (req, res) => {
+// SPA fallback ONLY for non-API routes
+app.get("*", (req, res, next) => {
+  if (req.originalUrl.startsWith("/api")) {
+    return next(); // skip API
+  }
   res.sendFile(path.join(__dirname, "..", "index.html"));
 });
 
